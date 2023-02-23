@@ -5,21 +5,32 @@ import { addHours } from 'date-fns'
 import { Navbar, CalendarEvent, CalendarModal, FabAddNew, FabDelete } from '../'
 import { getMessagesES, localizer } from '../../helpers'
 import { useUiStore } from '../../hooks/useUiStore'
-import { useCalendarStore } from '../../hooks'
+import { useAuthStore, useCalendarStore } from '../../hooks'
+import { useEffect } from 'react'
 
 
 export const CalendarPage = () => {
+
 	//* si no tenemos un item lastView en el localStorage , sera month por defecto
 	const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 
 	//* sacamos del store si vamos a abrir el modal
 	const { openDateModal } = useUiStore();
 
-	const { events, setActiveEvent } = useCalendarStore();
+	//* sacamos los eventos , los eventos activos y cuando empezamos a cargar los eventos
+	const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
+
+
+	const { user } = useAuthStore();
+
 	//* cargamos estilos a los eventos del calendario
 	const eventStyleGetter = (event, start, end, isSelected) => {
+
+		const isMyEvent = (user.uid === event.user._id) || (user.uid === event.user.uid);
+		//* comparamos si nuestro usuario logueado es igual al usuario que creo el evento
+		console.log(isMyEvent)
 		const style = {
-			backgroudColor: "#347cf7",
+			backgroundColor: isMyEvent ? '#347cf7' : '#636363', //* si es verdadero el azulcito si es falso el gris
 			borderRadius: '2px',
 			opacity: 0.8,
 			color: 'white'
@@ -45,6 +56,11 @@ export const CalendarPage = () => {
 		localStorage.setItem('lastView', event) // metemos en el localStorage , en el itemLastView el evento 
 		setLastView(event)
 	}
+
+	useEffect(() => {
+		startLoadingEvents() //* cargamos los eventos
+	}, [])
+
 	return (
 		<>
 			<Navbar />

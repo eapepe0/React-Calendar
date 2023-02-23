@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2";
 import calendarApi from "../api/calendarApi";
+import { onLogoutCalendar } from "../store";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store/auth/authSlice";
 
 export const useAuthStore = () => {
@@ -37,8 +38,8 @@ export const useAuthStore = () => {
 
 			Swal('Creacion de Usuario', 'El usuario fue creado exitosamente', 'success')
 		} catch (error) {
-			console.log(error)
-			dispatch(onLogout(error.response.data?.msg || ''))
+			console.log(error.response.data.msg)
+			dispatch(onLogout(error.response.data?.msg))
 			setTimeout(() => {
 				dispatch(clearErrorMessage())
 			}, 10);
@@ -61,12 +62,13 @@ export const useAuthStore = () => {
 
 		} catch (error) { //* si hay algun error
 			localStorage.clear()  //* nos borra el localStorage
-			dispatch(onLogout(error.response.data?.msg || '')) //* nos saca y nos muestra el error
+			dispatch(onLogout(error.response.data?.msg)) //* nos saca y nos muestra el error
 		}
 	}
 
 	const startLogout = () => {
 		localStorage.clear() //* borramos el localStorage
+		dispatch(onLogoutCalendar()) //* borramos los datos del calendario
 		dispatch(onLogout()) //* salimos
 	}
 
