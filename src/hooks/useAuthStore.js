@@ -29,14 +29,14 @@ export const useAuthStore = () => {
 		dispatch(onChecking());
 		try {
 			const { data } = await calendarApi.post('/auth/new', { name, email, password })
-			console.log({ data })
+			//console.log({ data })
 
 			localStorage.setItem('token', data.token); //* guardamos el token en el storage
 			localStorage.setItem('token-init-date', new Date().getTime()); //* guardamos la fecha de creacion del token
 
 			dispatch(onLogin({ name: data.name, uid: data.uid }))
 
-			Swal('Creacion de Usuario', 'El usuario fue creado exitosamente', 'success')
+			Swal.fire({ title: 'Creacion de Usuario', text: 'El usuario fue creado exitosamente', icon: 'success' })
 		} catch (error) {
 			console.log(error.response.data.msg)
 			dispatch(onLogout(error.response.data?.msg))

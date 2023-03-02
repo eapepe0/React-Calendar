@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { useUiStore } from '../../hooks/useUiStore';
 import { useCalendarStore } from '../../hooks';
+import { getEnvVariables } from '../../helpers';
 
 // cambiamos el idioma del DatePicker
 registerLocale('es', es)
@@ -25,7 +26,9 @@ const customStyles = {
 };
 
 // cargamos el modal en el elemento
-Modal.setAppElement('#root');
+if (getEnvVariables().VITE_MODE !== 'test') { //* si estamos en test no ejecutamos esta linea
+	Modal.setAppElement('#root');
+}
 export const CalendarModal = () => {
 	//* estado que nos dice si apretamos el boton submit
 	const [isSubmitted, setIsSubmitted] = useState(false)

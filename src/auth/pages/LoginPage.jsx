@@ -5,14 +5,14 @@ import Swal from 'sweetalert2';
 import { useEffect } from 'react';
 
 const loginFormFields = { //* valores por defecto que tendran los campos input del form login
-	loginEmail: 'eapepe0@gmail.com',
-	loginPassword: '1f1f46d'
+	loginEmail: '',
+	loginPassword: ''
 }
 const registerFormFields = { //* valores por defecto que tendran los campos input del form login
-	registerName: 'Cristian',
-	registerEmail: 'oyolibell@gmail.com',
-	registerPassword: '11111111',
-	registerPassword2: '11111111'
+	registerName: '',
+	registerEmail: '',
+	registerPassword: '',
+	registerPassword2: ''
 }
 
 export const LoginPage = () => {
